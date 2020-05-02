@@ -4,34 +4,36 @@ import sys
 import rospy
 import cv2
 import cv2.cv
-import message_filters
 import numpy as np
-from std_msgs.msg import String
-from sensor_msgs.msg import Image
+from std_msgs.msg import String,Int32,Float32MultiArray
+from sensor_msgs.msg import Image,PointCloud2
 from cv_bridge import CvBridge, CvBridgeError
 
 class depth_finder:
-        def __init__(self):
-        self.bridge = CvBridge()
+	def __init__(self):
+		self.bridge = CvBridge()
+        ## Bring in point cloud from message PointCloud2
+		self.image_sub = rospy.Subscriber("/depth_camera_ir/depth_camera/depth/image_raw",Image,self.callback)
 
-        depth_sub = message_filters.Subscriber("camera/depth/image", Image)
+	def callback(self,data):
+        ## Convert depth image to cv2 image
+		
+		depth_image = self.bridge.imgmsg_to_cv2(data, "passthrough")   
+		print depth_image.shape
+		
 
-        self.body_cascade = cv2.CascadeClassifier('/usr/local/share/OpenCV/haarcascades/haarcascade_upperbody.xml')
-        self.cmd_vel_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
+		depth_array = np.array(depth_image, dtype=np.float32)
 
-    def callback(self, rgb_data, depth_data):
-        try:
-            depth_image = self.bridge.imgmsg_to_cv2(depth_data, "passthrough")
-        except CvBridgeError, e:
-            print e
+		## Normalize intensity values to match depth range
+		cv2.normalize(depth_array, depth_array, 0.2, 3, cv2.NORM_MINMAX)
+		print depth_array.shape
+		print depth_array
+		
+	
 
-        depth_array = np.array(depth_image, dtype=np.float32)
-        cv2.normalize(depth_array, depth_array, 0, 1, cv2.NORM_MINMAX)
-
-        print depth_array(1 ,2)
 
 def main(args):
-    fp = depth_finder()
+    df = depth_finder()
     rospy.init_node('depth_finder', anonymous=True)
     try:
         rospy.spin()
