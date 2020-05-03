@@ -10,8 +10,6 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import numpy as np
 
-cv_image = 0
-canny = 0
 class image_converter:
     def __init__(self):
         ## Output image with circle
