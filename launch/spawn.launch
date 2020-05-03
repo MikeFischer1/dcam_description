@@ -6,7 +6,7 @@
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find dcam_description)/urdf/dcam_URDF.xacro'" />
         <arg name="x" default="0"/>
         <arg name="y" default="0"/>
-        <arg name="z" default="1"/>
+        <arg name="z" default="0.1"/>
 
   
         
