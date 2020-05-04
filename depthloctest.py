@@ -22,13 +22,23 @@ class depth_finder:
 
 		#rospy.Timer(rospy.Duration(self.dT), self.loop, oneshot=False)
 
-
+		# XYZ coordinates
 		self.x = 0.0
 		self.y = 0.0
 		self.z = 0.0
 
-		self.r_v = 0.0
+		#self.H = 0.0
 
+		# Intermediate angles
+		self.ay = 0.0
+		self.by = 0.0
+		self.az = 0.0
+		self.bz = 0.0
+
+		# Radial distance to button
+		self.r = 0.0
+
+		# Pixel inputs
 		self.pix_y = 0
 		self.pix_z = 0
 
@@ -49,12 +59,23 @@ class depth_finder:
 
 		print depth_array.shape
 
-		
-		self.x = depth_array[self.pix_z,self.pix_y]
+		# Find radial distance to button using pixel coordinates
+		self.r = depth_array[self.pix_z,self.pix_y]
 
-		self.r_v = self.x*np.sin(0.523599)
-		self.y = (300-float(self.pix_y))*self.r_v/300
-		self.z = (300-float(self.pix_z))*self.r_v/300
+		# Find intermediate angles
+		self.ay = (self.pix_y/300)*0.523599
+		self.by = 0.523599 - self.ay
+
+		self.az = (self.pix_z/300)*0.523599
+		self.bz = 0.523599 - self.az
+
+
+		
+		self.y = self.r*np.sin(self.by)
+		self.z = self.r*np.sin(self.bz)
+		#self.H = np.sqrt((self.y)**2 + (self.z)**2)
+		#self.x = np.sqrt((self.r)**2 + (self.H)**2)
+		self.x = self.r
 
 		self.xyz_array.data = []
 		self.xyz_array.data.append(self.x)
@@ -65,7 +86,7 @@ class depth_finder:
 		print self.x
 		print self.y
 		print self.z
-
+		print self.r
 	def pixel_callback(self,data):
 		
 		self.pix_y = data.data[0]
