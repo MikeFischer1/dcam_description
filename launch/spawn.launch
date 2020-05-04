@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
-  
+		<node pkg="dcam_description" type="cvproc.py" name="image_converter" output="screen"/>
+		<node pkg="dcam_description" type="depthloctest.py" name="depth_finder" output="screen"/>
+
         <!-- Robot model -->
         <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find dcam_description)/urdf/dcam_URDF.xacro'" />
         <arg name="x" default="0"/>
