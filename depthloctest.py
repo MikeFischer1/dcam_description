@@ -17,7 +17,6 @@ class depth_finder:
 	def __init__(self):
 		self.xyz_array = Float32MultiArray()
 		self.xyz_array.data = []
-
 		self.dT = 1
 
 		#rospy.Timer(rospy.Duration(self.dT), self.loop, oneshot=False)
@@ -52,30 +51,28 @@ class depth_finder:
         ## Convert depth image to cv2 image
 		
 		depth_image = self.bridge.imgmsg_to_cv2(data, "passthrough")   
-		print depth_image.shape
+		#print depth_image.shape
 		
 
 		depth_array = np.array(depth_image, dtype=np.float32)
 
-		print depth_array.shape
 
 		# Find radial distance to button using pixel coordinates
 		self.r = depth_array[self.pix_z,self.pix_y]
 
 		# Find intermediate angles
-		self.ay = (self.pix_y/300)*0.523599
+		self.ay = (float(self.pix_y)/300.0)*0.523599
 		self.by = 0.523599 - self.ay
 
-		self.az = (self.pix_z/300)*0.523599
+		self.az = (float(self.pix_z)/300.0)*0.523599
 		self.bz = 0.523599 - self.az
-
-
-		
-		self.y = self.r*np.sin(self.by)
-		self.z = self.r*np.sin(self.bz)
+	
+		self.y = self.r*np.sin(self.by) + 0.125*self.r*np.sin(self.by)## Change the subtracted/added value based on arm position
+		self.z = self.r*np.sin(self.bz) + 0.125*self.r*np.sin(self.bz) -0.1  ## Change the subtracted/added value based on arm position
 		#self.H = np.sqrt((self.y)**2 + (self.z)**2)
 		#self.x = np.sqrt((self.r)**2 + (self.H)**2)
 		self.x = self.r
+
 
 		self.xyz_array.data = []
 		self.xyz_array.data.append(self.x)
@@ -83,10 +80,10 @@ class depth_finder:
 		self.xyz_array.data.append(self.z)
 		self.xyz_pub.publish(self.xyz_array)
 		
-		print self.x
-		print self.y
-		print self.z
-		print self.r
+		#print self.x
+		#print self.y
+		#print self.z
+		#print self.r
 	def pixel_callback(self,data):
 		
 		self.pix_y = data.data[0]
