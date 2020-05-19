@@ -10,10 +10,15 @@ CV_Bridge: https://github.com/ros-perception/vision_opencv
 ## Specifications
 
 FOV: 1.047198 radians, or approximately 60 degrees
+
 Resolution: 600x600
+
 RGB sight distance: 0.05 to 3 m
+
 Depth sight distance: 0.2 to 3 m
+
 RGB refresh rate: 20 Hz
+
 Depth refresh rate: 1 Hz
 
 These specifications were set with the limited processing resources in the free version of Ros Development Studio in mind.
