@@ -1,7 +1,7 @@
 # dcam_description
 dcam_description uses Ros Kinetic and Gazebo
 
-dcam_description contains a depth and RGB camera which uses its color and depth image to locate a sphere in 3D space. n
+dcam_description contains a depth and RGB camera which uses its color and depth image to locate a sphere in 3D space. 
 
 ## Dependencies
 Openni: https://github.com/OpenNI/OpenNI
