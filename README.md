@@ -36,7 +36,7 @@ To change the spawn location, modify the values of these arguments in the launch
 ### Processing Map
 The image processing follows the map below:
 
-![map](images/map.JPG)
+![map](images/map.jpg)
 
 Please see the appendix for a full list of active topics and nodes. The camera publishes the color image to the topic ending in /color/image_raw, which is subscribed to by the image_converter node. This node is responsible for using OpenCV and CV_Bridge to recognize circles using a Hough transform within a specified pixel diameter range and locate the center with pixel coordinates. The coordinate information is published tothe /yz_pix topic. Meanwhile, the depth image is published to the topic ending in /depth/image_raw, which contains a depth distance in meters for each pixel. the depth_finder node subscribes to this and the /yz_pix topic and finds the location in 3D space relative to the camera, with the relative x-direction as depth, y as left and z as up. These values are published to the /button_xyz topic. 
 
