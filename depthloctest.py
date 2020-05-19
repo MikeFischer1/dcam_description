@@ -66,7 +66,8 @@ class depth_finder:
 
 		self.az = (float(self.pix_z)/300.0)*0.523599
 		self.bz = 0.523599 - self.az
-	
+
+
 		self.y = self.r*np.sin(self.by) + 0.125*self.r*np.sin(self.by)## Change the subtracted/added value based on arm position
 		self.z = self.r*np.sin(self.bz) + 0.125*self.r*np.sin(self.bz) -0.1  ## Change the subtracted/added value based on arm position
 		#self.H = np.sqrt((self.y)**2 + (self.z)**2)
